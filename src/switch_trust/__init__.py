@@ -198,10 +198,11 @@ def wrap(
     Auto-initializes Switch Trust SDK if not already initialized.
     Returns the same client instance, mutated in place.
 
-    By default the upstream provider key is NOT forwarded to the gateway; the
-    gateway supplies its own upstream credentials. Set ``forward_llm_key=True``
-    to auto-extract the key from the client and forward it as ``X-LLM-API-Key``.
-    Passing ``llm_api_key=`` or setting ``SWITCH_TRUST_LLM_API_KEY`` still forwards an
+    The gateway does not hold its own upstream provider credentials, so a key
+    must be forwarded for requests to reach the provider. By default the
+    client's key is NOT auto-forwarded; set ``forward_llm_key=True`` to
+    auto-extract it from the client and forward it as ``X-LLM-API-Key``.
+    Passing ``llm_api_key=`` or setting ``SWITCH_TRUST_LLM_API_KEY`` forwards an
     explicit key regardless of this flag.
     """
     from switch_trust import core  # noqa: PLC0415 - breaks an import cycle

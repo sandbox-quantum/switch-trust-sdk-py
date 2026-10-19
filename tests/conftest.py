@@ -32,7 +32,7 @@ def _reset_switch_trust(monkeypatch):
     # pass allow_insecure_gateway=True.
     monkeypatch.setenv(
         "SWITCH_TRUST_ALLOWED_GATEWAY_HOSTS",
-        "api.flintai.dev,gw.example.com,gw1.example.com,gw2.example.com,"
+        "api.switchagents.ai,gw.example.com,gw1.example.com,gw2.example.com,"
         "custom.host,any-host.example.com,gw.corp.com,gw.env.com,"
         "guardrails.env.com,explicit.com",
     )

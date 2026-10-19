@@ -30,7 +30,7 @@ class ADKGuardrailsPlugin(SwitchTrustPlugin):
         from google.adk import Agent
 
         plugin = ADKGuardrailsPlugin(
-            gateway_url="https://api.flintai.dev",
+            gateway_url="https://api.switchagents.ai",
             api_key="your-guardrails-api-key",
             llm_api_key="your-gemini-api-key",
         )

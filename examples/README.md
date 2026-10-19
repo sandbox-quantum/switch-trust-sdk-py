@@ -11,6 +11,7 @@
 
 ## ADK
 
+- `adk/devops_assistant` is deliberately insecure (hard-coded fake credentials and a shell tool) for demonstrating code scanners. Do not run it outside a sandbox.
 - `cd adk`
 - Configure an `.env` file that contains `SWITCH_TRUST_GATEWAY_URL`, `SWITCH_TRUST_API_KEY`, and `SWITCH_TRUST_LLM_API_KEY` per README instructions of the Switch Trust SDK.
 - `adk web . --port 8501`

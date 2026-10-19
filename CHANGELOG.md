@@ -10,7 +10,19 @@ and `flintai-sdk-py`, the retired name it was published under for versions
 
 ## switch-trust-sdk-py
 
-### 1.1.0 - 2026-10-14
+### 1.1.1
+
+#### Changed
+
+- Updated README, tests, and examples to use api.switchagents.ai as default URL.
+- README: `AGENT_ID` and `AGENT_NAME` are environment variables only; `wrap()`
+  takes no `agent_id` or `agent_name` argument.
+- Starting with this release the package is licensed under Apache 2.0 as
+  limited by a modified Commons Clause condition; see LICENSE. The package
+  metadata points to that file instead of declaring `Apache-2.0`. 1.1.0 and
+  `flintai-sdk-py` 1.0.0 to 1.0.2 were published under plain Apache 2.0.
+
+### 1.1.0
 
 #### Security
 
@@ -69,7 +81,7 @@ and `flintai-sdk-py`, the retired name it was published under for versions
 
 ## flintai-sdk-py (retired)
 
-### flintai-sdk-py 1.0.2 - 2026-07-17
+### flintai-sdk-py 1.0.2
 
 #### Changed
 
@@ -77,14 +89,14 @@ and `flintai-sdk-py`, the retired name it was published under for versions
   `AGENT_ID` environment variable is set. It no longer falls back to the plugin
   name (`adk-guardrails` or `langchain-guardrails`).
 
-### flintai-sdk-py 1.0.1 - 2026-07-15
+### flintai-sdk-py 1.0.1
 
 #### Changed
 
 - Documentation: docstring examples use `https://app.flintai.dev` instead of a
   placeholder host.
 
-### flintai-sdk-py 1.0.0 - 2026-07-15
+### flintai-sdk-py 1.0.0
 
 #### Added
 

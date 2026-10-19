@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "switch-trust-sdk-py"
-version = "1.1.0"
+version = "1.1.1"
 description = "Lightweight SDK for routing AI agent LLM traffic through the Switch Trust guardrails proxy"
 readme = "README.md"
 requires-python = ">=3.10"
-license = "Apache-2.0"
+license = "LicenseRef-Apache-2.0-with-Commons-Clause"
 license-files = ["LICENSE"]
 authors = [
   {name = "SandboxAQ"},
