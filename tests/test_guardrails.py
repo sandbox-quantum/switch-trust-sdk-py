@@ -666,7 +666,7 @@ def test_validate_default_allowlist_accepts_api_switchagents_ai(monkeypatch):
 
 def test_validate_loopback_exempt_from_allowlist_with_flag(monkeypatch):
     """Loopback is allowed against a restrictive allowlist when the flag is set."""
-    monkeypatch.setenv("SWITCH_TRUST_ALLOWED_GATEWAY_HOSTS", "api.flintai.dev")
+    monkeypatch.setenv("SWITCH_TRUST_ALLOWED_GATEWAY_HOSTS", "api.switchagents.ai")
     with warnings.catch_warnings(record=True):
         warnings.simplefilter("always")
         config = build_guardrails_config(

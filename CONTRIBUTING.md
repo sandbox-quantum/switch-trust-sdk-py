@@ -1,45 +1,39 @@
 # Contributing to Switch Trust SDK (Python)
 
-Thank you for your interest in contributing!
+Thank you for your interest in the Switch Trust SDK.
 
-## Getting Started
+## Contribution policy
 
-1. Fork the repository and clone your fork.
-2. Create a virtual environment and install dev dependencies:
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate
-   pip install -e ".[dev]"
-   ```
-3. Create a feature branch: `git checkout -b my-feature`
+At this time, **we do not accept external code contributions**. Pull requests from outside the team will not be merged.
 
-## Running Tests
+This is not a reflection on the quality of any contribution — it allows us to maintain tight control over the codebase, security posture, and release process.
 
-```bash
-pytest
-```
+## How you can help
 
-## Code Style
+- **Bug reports:** [open an issue](https://github.com/sandbox-quantum/switch-trust-sdk-py/issues/new)
+  with a minimal reproducible example and the version of `switch-trust-sdk-py`
+  you are using.
+- **Feature requests:** open an issue describing the use case.
+- **Questions:** open an issue.
 
-This project uses [ruff](https://docs.astral.sh/ruff/) for linting and formatting:
+## Security issues
 
-```bash
-ruff check .
-ruff format .
-```
+Do not open a public issue for a vulnerability. Follow [SECURITY.md](SECURITY.md)
+to report it privately.
 
-Type checking with mypy:
+## Building locally
 
 ```bash
-mypy src/
+python -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+pytest              # Run test suite
+ruff check .        # Lint
+ruff format .       # Format
+mypy src/           # Type-check
 ```
-
-## Submitting a Pull Request
-
-1. Ensure all tests pass and there are no lint errors.
-2. Write a clear PR description explaining what the change does and why.
-3. Reference any relevant issues.
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the Apache 2.0 License.
+This SDK is licensed under the terms in [LICENSE](LICENSE): Apache 2.0, as
+limited by a modified Commons Clause license condition.

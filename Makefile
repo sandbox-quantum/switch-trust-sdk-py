@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 .SHELLFLAGS := -eu -o pipefail -c
 
-.PHONY: install install-dev test lint typecheck build clean release-audit license-check sbom vuln-scan secret-scan lock-deps check-metadata
+.PHONY: install install-dev test lint typecheck build clean release-audit license-check sbom vuln-scan secret-scan secret-scan-selftest lock-deps check-metadata
 
 # ---------------------------------------------------------------------------
 # Development
@@ -76,7 +76,6 @@ release-audit: check-metadata lock-deps license-check sbom vuln-scan secret-scan
 # Packages whose license field carries full license text rather than a short
 # SPDX identifier (so --allow-only can't match them). Manually verified permissive:
 #   tiktoken            — MIT License
-#   switch-trust-sdk-py — Apache-2.0 (this project)
 IGNORE_PACKAGES := --ignore-packages switch-trust-sdk-py tiktoken
 
 license-check:
@@ -178,7 +177,15 @@ vuln-scan: lock-deps
 	if [ "$$rc" -ne 0 ]; then echo "FAIL: pip-audit reported vulnerabilities (exit $$rc) - see release/vulnerabilities.txt"; fi; \
 	exit $$rc
 
-secret-scan:
+secret-scan-selftest:
+	@d=$$(mktemp -d); \
+	printf 'token = "ghp_%s"\n' "$$(od -An -N18 -tx1 /dev/urandom | tr -d ' \n')" > "$$d/canary.txt"; \
+	rc=0; gitleaks detect --source "$$d" --no-git --config .gitleaks.toml --redact --exit-code 42 >/dev/null 2>&1 || rc=$$?; \
+	rm -rf "$$d"; \
+	if [ "$$rc" -ne 42 ]; then echo "FAIL: gitleaks missed a generated test token (exit $$rc); .gitleaks.toml rules are not running"; exit 1; fi
+	@echo "gitleaks self-test passed."
+
+secret-scan: secret-scan-selftest
 	@mkdir -p release
 	@echo "=== Secret scan (gitleaks) ==="
 	gitleaks detect --source . --no-git --config .gitleaks.toml --redact \

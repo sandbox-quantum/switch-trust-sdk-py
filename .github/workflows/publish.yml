@@ -1,14 +1,14 @@
 name: Publish to PyPI
 
 on:
-  release:
-    types: [published]
+  push:
+    tags: ["v*"]
 
 permissions:
   contents: read
 
 concurrency:
-  group: publish-${{ github.event.release.tag_name }}
+  group: publish-${{ github.ref_name }}
   cancel-in-progress: false
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
     name: Verify release tag
     runs-on: ubuntu-latest
     env:
-      TAG: ${{ github.event.release.tag_name }}
+      TAG: ${{ github.ref_name }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
@@ -51,6 +51,14 @@ jobs:
               exit 1
               ;;
           esac
+      - name: No GitHub release may exist for the tag yet
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$TAG" -R "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "::error::a GitHub release for $TAG already exists; publish.yml creates it after PyPI, and releases are immutable (RELEASE.md)"
+            exit 1
+          fi
       - name: Tag must match the package version and have a CHANGELOG entry
         run: |
           version="$(python3 -I -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])")"
@@ -58,8 +66,8 @@ jobs:
             echo "::error::tag $TAG does not match pyproject.toml version v${version}"
             exit 1
           fi
-          if ! grep -Fq "### ${version} - " CHANGELOG.md; then
-            echo "::error::CHANGELOG.md has no '### ${version} - YYYY-MM-DD' entry; add one to the SDK source before releasing"
+          if ! grep -qxF "### ${version}" CHANGELOG.md; then
+            echo "::error::CHANGELOG.md has no '### ${version}' heading; rename '### Unreleased' to it in the SDK source before releasing"
             exit 1
           fi
 
@@ -128,9 +136,9 @@ jobs:
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b  # v1.14.0
 
-  attach-reports:
-    name: Attach audit reports to release
-    needs: [verify, build, publish]
+  github-release:
+    name: Create the GitHub release with audit reports
+    needs: [verify, release-audit, publish]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -140,11 +148,10 @@ jobs:
         with:
           name: release-audit
           path: audit/
-      - name: Upload reports to the GitHub release
+      - name: Create the release with the audit reports
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ github.event.release.tag_name }}
+          TAG: ${{ github.ref_name }}
         run: |
-          shopt -s nullglob
           files=(audit/release/* audit/requirements.lock)
-          gh release upload "$TAG" "${files[@]}" --clobber -R "$GITHUB_REPOSITORY"
+          gh release create "$TAG" "${files[@]}" --verify-tag --title "$TAG" --generate-notes -R "$GITHUB_REPOSITORY"

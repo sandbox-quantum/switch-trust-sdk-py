@@ -7,8 +7,8 @@ the latest released version on PyPI.
 
 | Version | Supported |
 | ------- | --------- |
-| 1.0.x   | ✅        |
-| < 1.0   | ❌        |
+| `switch-trust-sdk-py` 1.1.x | ✅ |
+| `flintai-sdk-py` (retired name, 1.0.x) | ❌ |
 
 ## Reporting a Vulnerability
 

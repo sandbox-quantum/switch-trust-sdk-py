@@ -68,7 +68,7 @@ def mock_adk_modules():
 def test_adk_plugin_creates_content_config(mock_genai_modules):
     switch_trust.init(
         provider="google",
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -77,7 +77,8 @@ def test_adk_plugin_creates_content_config(mock_genai_modules):
 
     assert plugin.content_config is not None
     assert (
-        plugin.content_config.http_options.base_url == "https://api.flintai.dev/gemini/"
+        plugin.content_config.http_options.base_url
+        == "https://api.switchagents.ai/gemini/"
     )
     assert (
         plugin.content_config.http_options.headers["X-FlintAI-API-Key"] == "grl_sk_test"
@@ -87,13 +88,14 @@ def test_adk_plugin_creates_content_config(mock_genai_modules):
 
 def test_adk_plugin_simplified_flow(mock_genai_modules):
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
     assert plugin.content_config is not None
     assert (
-        plugin.content_config.http_options.base_url == "https://api.flintai.dev/gemini/"
+        plugin.content_config.http_options.base_url
+        == "https://api.switchagents.ai/gemini/"
     )
     assert (
         plugin.content_config.http_options.headers["X-FlintAI-API-Key"] == "grl_sk_test"
@@ -110,7 +112,7 @@ def test_adk_plugin_merges_user_content_config_into_clone(mock_genai_modules):
     user_config.top_p = 0.9
 
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
         content_config=user_config,
@@ -118,7 +120,8 @@ def test_adk_plugin_merges_user_content_config_into_clone(mock_genai_modules):
     # The clone carries the user settings plus guardrails http_options...
     assert plugin.content_config is not user_config
     assert (
-        plugin.content_config.http_options.base_url == "https://api.flintai.dev/gemini/"
+        plugin.content_config.http_options.base_url
+        == "https://api.switchagents.ai/gemini/"
     )
     assert (
         plugin.content_config.http_options.headers["X-FlintAI-API-Key"] == "grl_sk_test"
@@ -159,7 +162,7 @@ def test_adk_plugin_reused_content_config_not_cross_contaminated(mock_genai_modu
 
 def test_adk_plugin_simplified_with_policy_id(mock_genai_modules):
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
         policy_id="pol-1",
@@ -173,7 +176,7 @@ def test_adk_plugin_on_init_with_constructor_config(mock_genai_modules, caplog):
     import logging
 
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -363,7 +366,7 @@ def test_on_model_error_non_blocked_reraises(mock_adk_modules):
 
 def test_before_model_callback_injects_agent_name_and_session_id(mock_genai_modules):
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -384,7 +387,7 @@ def test_before_model_callback_injects_agent_name_and_session_id(mock_genai_modu
 
 def test_before_model_callback_injects_turn_id_from_invocation_id(mock_genai_modules):
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -405,7 +408,7 @@ def test_before_model_callback_turn_id_changes_per_invocation(mock_genai_modules
     """Every model call of one invocation shares its id; the next user message
     gets a new one — the rebuilt headers never carry the previous turn's id."""
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -425,7 +428,7 @@ def test_before_model_callback_turn_id_changes_per_invocation(mock_genai_modules
 
 def test_before_model_callback_no_invocation_id_skips_turn_header(mock_genai_modules):
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -442,7 +445,7 @@ def test_before_model_callback_no_invocation_id_skips_turn_header(mock_genai_mod
 
 def test_before_model_callback_no_agent_name(mock_genai_modules):
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -471,7 +474,7 @@ def test_before_model_callback_request_supplied_identity_not_trusted(
     """
     monkeypatch.delenv("AGENT_NAME", raising=False)
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -491,7 +494,7 @@ def test_before_model_callback_request_supplied_identity_not_trusted(
 
 def test_before_model_callback_no_session(mock_genai_modules):
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -512,7 +515,7 @@ def test_before_model_callback_sequential_reuse_clears_stale_session(
 ):
     """A later request with no session must not inherit an earlier session id."""
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -535,7 +538,7 @@ def test_before_model_callback_sequential_reuse_clears_stale_session(
 def test_before_model_callback_mixed_session_reuse_overwrites(mock_genai_modules):
     """A later session id replaces an earlier one on a reused config."""
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -561,7 +564,7 @@ def test_before_model_callback_concurrent_requests_isolated(mock_genai_modules):
     writer win for everyone. Each request must get its own http_options instead.
     """
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -595,7 +598,7 @@ def test_before_model_callback_reused_config_agent_name_not_carried_over(
     """A reused config must not carry an earlier turn's agent name forward."""
     monkeypatch.delenv("AGENT_NAME", raising=False)
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -624,7 +627,7 @@ def test_before_model_callback_does_not_mutate_content_config_in_place(
     object (and its headers) untouched.
     """
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -649,7 +652,7 @@ def test_before_model_callback_does_not_mutate_content_config_in_place(
 
 def test_before_model_callback_config_none_raises_when_required(mock_genai_modules):
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -664,7 +667,7 @@ def test_before_model_callback_config_none_raises_when_required(mock_genai_modul
 
 def test_before_model_callback_config_none_best_effort(mock_genai_modules):
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
         require_guardrails=False,
@@ -681,7 +684,7 @@ def test_before_model_callback_http_options_none_raises_when_required(
     mock_genai_modules,
 ):
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -696,7 +699,7 @@ def test_before_model_callback_http_options_none_raises_when_required(
 
 def test_before_model_callback_http_options_none_best_effort(mock_genai_modules):
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
         require_guardrails=False,
@@ -711,7 +714,7 @@ def test_before_model_callback_http_options_none_best_effort(mock_genai_modules)
 
 def test_before_model_callback_headers_none(mock_genai_modules):
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -734,7 +737,7 @@ def test_before_model_callback_agent_name_env_var_takes_priority(
 ):
     monkeypatch.setenv("AGENT_NAME", "env-agent-name")
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -754,7 +757,7 @@ def test_before_model_callback_agent_id_env_var_in_header_when_provided(
 ):
     monkeypatch.setenv("AGENT_ID", "custom-agent-id")
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -775,7 +778,7 @@ def test_before_model_callback_no_agent_id_header_without_env_var(
 ):
     monkeypatch.delenv("AGENT_ID", raising=False)
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -801,7 +804,7 @@ def test_before_model_callback_env_identity_is_sent_once(
     monkeypatch.setenv("AGENT_ID", "agn_123")
     monkeypatch.setenv("AGENT_NAME", "env-agent")
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -826,7 +829,7 @@ def test_before_model_callback_empty_env_falls_back_to_agent_name(
     monkeypatch.setenv("AGENT_ID", "")
     monkeypatch.setenv("AGENT_NAME", "")
     plugin = ADKGuardrailsPlugin(
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -904,7 +907,7 @@ def test_adk_plugin_opt_out_emits_audit_warning(mock_genai_modules, caplog):
     # Guarded init (no warning) so the asserted warning comes from the plugin path.
     switch_trust.init(
         provider="google",
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
@@ -935,7 +938,7 @@ def test_adk_plugin_dangerously_disable_conflict_raises():
 def test_adk_plugin_dangerously_disable_resolves_to_false(mock_genai_modules):
     switch_trust.init(
         provider="google",
-        gateway_url="https://api.flintai.dev",
+        gateway_url="https://api.switchagents.ai",
         api_key="grl_sk_test",
         llm_api_key="AIzaSy_test",
     )
