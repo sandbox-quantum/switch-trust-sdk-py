@@ -63,7 +63,7 @@ check-metadata:
 	@echo ""
 
 # ---------------------------------------------------------------------------
-# Release audit (mirrors flintai-cli)
+# Release audit (mirrors switch-trust-cli)
 # ---------------------------------------------------------------------------
 
 release-audit: check-metadata lock-deps license-check sbom vuln-scan secret-scan
